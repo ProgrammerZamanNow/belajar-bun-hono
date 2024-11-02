@@ -10,6 +10,8 @@ import {
     deleteCookie,
 } from 'hono/cookie'
 import {web} from "./web";
+import {z} from 'zod';
+import {zValidator} from "@hono/zod-validator";
 
 class MyException extends Error {
 
@@ -179,5 +181,18 @@ app.get('/cookie/get', (c) => {
 })
 
 app.route('/', web)
+
+app.post('/login',
+    zValidator('json', z.object({
+        username: z.string().min(3).max(10),
+        password: z.string().min(3).max(10)
+    })),
+    async (c) => {
+        const body = await c.req.json();
+        return c.json({
+            data: `Hello ${body.username}`
+        })
+    }
+)
 
 export default app
