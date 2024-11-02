@@ -32,4 +32,21 @@ book.get('/book/:id', (c) => {
 
 app.route('/', book)
 
+app.get('/context', async (c) => {
+    c.header('Content-Type', 'application/json');
+    c.status(200);
+
+    return c.body(JSON.stringify({
+        "first_name" : "eko",
+        "last_name" : "khannedy"
+    }))
+})
+
+app.get('/context.json', async (c) => {
+    return c.json({
+        "first_name" : "eko",
+        "last_name" : "khannedy"
+    })
+})
+
 export default app
