@@ -1,1 +1,16 @@
 POST http://localhost:3000/post
+
+###
+
+POST http://localhost:3000/users
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name" : "Eko"
+}
+
+
+###
+
+GET http://localhost:3000/response/json

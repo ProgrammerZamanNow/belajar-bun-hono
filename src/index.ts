@@ -49,4 +49,34 @@ app.get('/context.json', async (c) => {
     })
 })
 
+app.post('/users', async (c) => {
+    const json = await c.req.json()
+    return c.json({
+        hello: `Hello ${json.name}`
+    })
+})
+
+app.get('/users', async (c) => {
+    const page = c.req.query('page')
+    const size = c.req.query('size')
+
+    return c.text(`Users with page ${page} and size ${size}`)
+})
+
+app.get('/response/text', (c) => {
+    return c.text("Hello Hono")
+})
+
+app.get('/response/json', (c) => {
+    c.status(201)
+    c.header('X-Author', 'Eko Kurniawan')
+    return c.json({
+        data: "Hello Hono"
+    })
+})
+
+app.get('/response/html', (c) => {
+    return c.html("<html><body><h1>Hello Hono</h1></body></html>>")
+})
+
 export default app
