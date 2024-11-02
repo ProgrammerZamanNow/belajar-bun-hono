@@ -126,4 +126,22 @@ app.get('/response/html', (c) => {
     return c.html("<html><body><h1>Hello Hono</h1></body></html>>")
 })
 
+const admin = new Hono().basePath("/admin")
+
+admin.use(async (c, next) => {
+    const token = c.req.header("Authorization")
+
+    if (!token) {
+        throw new HTTPException(401)
+    }
+
+    // lanjutkan request kalo ada
+    await next()
+})
+admin.get('/a', (c) => c.text("Admin A"))
+admin.get('/b', (c) => c.text("Admin B"))
+admin.get('/c', (c) => c.text("Admin C"))
+
+app.route('/', admin)
+
 export default app
