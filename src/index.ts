@@ -1,6 +1,31 @@
 import {Hono} from 'hono'
+import {HTTPException} from "hono/http-exception";
+
+class MyException extends Error {
+
+}
 
 const app = new Hono()
+
+app.onError(async (err, c) => {
+    if (err instanceof HTTPException) {
+        return err.getResponse();
+    }
+
+    if (err instanceof MyException) {
+        c.status(401)
+        return c.json({
+            error: "Ups"
+        })
+    }
+
+    c.status(500)
+    return c.text("Ups");
+})
+
+app.get('/ups', (c) => {
+    throw new MyException();
+})
 
 app
     .get('/hello/:name', (c) => {
@@ -17,6 +42,28 @@ app
     .get('/', (c) => {
         return c.text('Hello Programmer Zaman Now!')
     })
+
+app.get('/say-hello', async (c) => {
+    const name = c.req.query('name')
+    if (!name) {
+        throw new HTTPException(400, {
+            res: new Response(
+                JSON.stringify({
+                    error: "Name param must not empty"
+                }),
+                {
+                    status: 400,
+                    headers: {
+                        "Author": "Eko",
+                        "Content-Type": "application/json"
+                    }
+                }
+            )
+        })
+    }
+
+    return c.text(`Hello ${name}`)
+})
 
 const book = new Hono().basePath('/api');
 book.get('/book', (c) => {
@@ -37,15 +84,15 @@ app.get('/context', async (c) => {
     c.status(200);
 
     return c.body(JSON.stringify({
-        "first_name" : "eko",
-        "last_name" : "khannedy"
+        "first_name": "eko",
+        "last_name": "khannedy"
     }))
 })
 
 app.get('/context.json', async (c) => {
     return c.json({
-        "first_name" : "eko",
-        "last_name" : "khannedy"
+        "first_name": "eko",
+        "last_name": "khannedy"
     })
 })
 

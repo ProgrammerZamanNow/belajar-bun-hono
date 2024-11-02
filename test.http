@@ -13,4 +13,4 @@ Accept: application/json
 
 ###
 
-GET http://localhost:3000/response/json
+GET http://localhost:3000/ups
