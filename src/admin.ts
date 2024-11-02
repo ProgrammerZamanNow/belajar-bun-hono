@@ -1,5 +1,5 @@
 import {Hono} from "hono";
-import {HTTPException} from "hono/dist/types/http-exception";
+import {HTTPException} from "hono/http-exception";
 
 export const admin = new Hono().basePath("/admin")
 

@@ -1,6 +1,6 @@
 import {Hono} from "hono";
-import {basicAuth} from "hono/dist/types/middleware/basic-auth";
-import {requestId} from "hono/dist/types/middleware/request-id";
+import {basicAuth} from "hono/basic-auth";
+import {requestId} from "hono/request-id";
 
 export const operation = new Hono().basePath("/operation")
 operation.use(basicAuth({

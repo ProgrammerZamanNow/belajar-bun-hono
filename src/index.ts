@@ -14,6 +14,7 @@ import {z} from 'zod';
 import {zValidator} from "@hono/zod-validator";
 import {admin} from "./admin";
 import {operation} from "./operation";
+import {serveStatic} from "hono/bun";
 
 class MyException extends Error {
 
@@ -168,5 +169,7 @@ app.post('/login',
         })
     }
 )
+
+app.use("/public/*", serveStatic({root: "./"}))
 
 export default app
